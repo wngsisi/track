@@ -112,18 +112,29 @@ datas = [0, 1]
 datae = [0]
 def trackObject(cx, cy, w, h):  # cx,cy为识别框中心点坐标，w,h为图像宽和高
     global perrorLR, perrorUD
-    kLR = [0.3, 0.3]
-    kUD = [0.5, 0.5]
+    kLR = [0.4, 0.4, 0.5]
+    kUD = [0.3, 0.1, 0.3]
     if cx!=-1:  # 死循环
         # PID控制
-        errorLR = w//2 - cx                                      # 识别框中心与图框中心在x轴上的距离，，此处定义为x轴上的偏差
-        posX1 = kLR[0] * errorLR + kLR[1] * (errorLR-perrorLR)   # 比例偏差值（不确定）P分量=当前误差*系数+上次的误差增量*系数
-        posX = np.interp(posX1, [-w//2, w//2], [20, 160])
+        errorLR = w // 2 - cx  # 识别框中心与图框中心在x轴上的距离
+        errorUD = h // 2 - cy  # 识别框中心与图框中心在x轴上的距离
+        posX1 = kLR[0] * errorLR + kLR[1] * (errorLR - perrorLR)  # 比例和积分分量
+        posY1 = kUD[0] * errorUD + kUD[1] * (errorUD - perrorUD)  # 比例和积分分量
+
+        # 使用微分项
+        derrorLR = errorLR - perrorLR
+        derrorUD = errorUD - perrorUD
+        posX1 += kLR[2] * derrorLR  # 添加微分分量
+        posY1 += kUD[2] * derrorUD  # 添加微分分量
+
+        # 更新误差积分
         perrorLR = errorLR
-        errorUD = h//2 - cy
-        posY1 = kUD[0] * errorUD + kUD[1] * (errorUD-perrorUD)
-        posY = np.interp(posY1, [-w//2, w//2], [20, 160])
         perrorUD = errorUD
+
+        # 将误差映射到输出值
+        posX = np.interp(posX1, [-w // 2, w // 2], [20, 160])
+        posY = np.interp(posY1, [-w // 2, w // 2], [20, 160])
+
         data = [posX, posY]
         sm.sendData(serr, data)
 if __name__ == '__main__':
