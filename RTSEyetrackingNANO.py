@@ -1,6 +1,6 @@
 import threading
 import cv2
-import ObjectDetectionModule as odm
+import ObjectDetectionModuleNANO as odm
 import SerialModule as sm
 import numpy as np
 import base64
