@@ -118,7 +118,7 @@ if __name__ == '__main__':
         cx, cy, imgObjects = findCenter(imgObjects, objects)
         h, w, c = imgObjects.shape
 
-        cv2.line(imgObjects, (w // 2, 0), (w // 2, h), (255, 0, 255), 1)  # 画出图框中心点十字交叉线
+        cv2.line(imgObjects, (w // 2, 0), (w // 2, h), (255, 0, 255), 1)  
         cv2.line(imgObjects, (0, h // 2), (w, h // 2), (255, 0, 255), 1)
         trackObject(cx, cy, w, h)
         img = cv2.resize(imgObjects, (0, 0), None, 3, 3)
