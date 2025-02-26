@@ -124,7 +124,7 @@ if __name__ == '__main__':
         img = cv2.resize(imgObjects, (0, 0), None, 3, 3)
         imgstring = base64.b64encode(img)
         print(type(imgstring))
-        cv2.imshow("cam", img)
+        #cv2.imshow("cam", img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     rtscap.stop_read()
