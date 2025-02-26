@@ -5,10 +5,10 @@ def findObjects(img, objectCascade, scaleF = 1.1, minN = 4):
     imgObjects = img.copy()
     imgGray = cv2.cvtColor(imgObjects, cv2.COLOR_BGR2GRAY)
     objects = objectCascade.detectMultiScale(imgGray, scaleF, minN)
-    objectsOut = []                                                             # 创建空列表
+    objectsOut = []                                                            
     for (x, y, w, h) in objects:
-        cv2.rectangle(imgObjects, (x, y), (x+w, y+h), (255, 0, 255), 2)         # 在图像上绘制矩形
-        objectsOut.append([[x, y, w, h], w*h])                                  # append方法用在列表末尾添加新的对象
+        cv2.rectangle(imgObjects, (x, y), (x+w, y+h), (255, 0, 255), 2)         
+        objectsOut.append([[x, y, w, h], w*h])                                  
 
     objecctsOut = sorted(objectsOut, key=lambda x: x[1], reverse=True)
     
